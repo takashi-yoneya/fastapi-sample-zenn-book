@@ -23,6 +23,25 @@ title: "Introduction"
 [https://github.com/takashi-yoneya/fastapi-mybest-template](https://github.com/takashi-yoneya/fastapi-mybest-template)
 
 
-# コンテンツ
-準備中です。すぐに確認したい方は上記のGithubリポジトリのReadmeを参照してください。
+# 目次
+コンテンツは準備中ですが、ソースコードレベルでは実装済のため、すぐに確認したい方は上記のGithubリポジトリのReadmeを参照してください。
 
+## Basic
+- Routerを使用したAPIエンドポイントの管理
+- DBレコードの作成・取得・更新・削除(CRUD)
+- User管理(ログイン、ログアウト、権限)
+- パッケージ管理、タスクランナー管理(Package management, task runner management)
+- エラーメッセージ、エラーコードの効率的な実装
+- configファイルを使用したloggingの実装
+- テスト(Testing)
+- DBマイグレーション(DB migrations)
+- GithubActionsを使用したECSへのデプロイ(CI/CD)
+
+# Additional
+- 効率的な論理削除の実装
+- キャメルケースとスネークケースの相互変換(Mutual conversion between CamelCase and SnakeCase)
+- バッチ処理(Batch)
+- Settingsクラスを使用した設定情報の集中管理
+- CORS-ORIGINの柔軟な設定方法
+- Sentryを使用したログの集中管理(Sentry log management)
+- 自然言語解析(sudachi language analyze)

@@ -1,3 +1,1 @@
-# Zenn CLI
-
-* [📘 How to use](https://zenn.dev/zenn/articles/zenn-cli-guide)
+# fastapi-sampleの解説用のZenn Bookのリポジトリ
