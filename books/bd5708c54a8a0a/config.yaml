@@ -6,5 +6,6 @@ price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
   - 00-introduction
+  - 01-structure
   # - 01-crud
 
