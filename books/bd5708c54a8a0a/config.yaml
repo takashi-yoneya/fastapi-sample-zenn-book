@@ -8,5 +8,6 @@ chapters:
   - 00-introduction
   - 01-structure
   - 01-endpoints
+  - 10-soft_delete
   # - 01-crud
 

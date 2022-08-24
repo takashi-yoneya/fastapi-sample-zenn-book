@@ -27,6 +27,8 @@ def get_job(id: str, include_deleted: bool = False, db: Session = Depends(get_db
         raise APIException(ErrorMessage.ID_NOT_FOUND)
     return job
 
+app.include_routerで、routerに指定されたendpointを一括で紐づけることができます。
+
 ```
 [mian.py](https://github.com/takashi-yoneya/fastapi-mybest-template/blob/e1130d4f0437bbfe3bbd2211c832ac0f2107ff67/app/main.py#L49)
 
@@ -59,6 +61,7 @@ def get_db() -> Generator:
 ```
 
 Schemaのうち、Response系のSchemaはORMから直接Schemaに変換したい場合が多いため、```orm_mode=True```をセットすることで、SQLAlchemyのmodelから直接Schemaに変換できます。
+後述するBaseSchemaを継承しており、Schema全体で有効化したい設定は、こちらで定義します。
 
 [schemas/jobs.py](https://github.com/takashi-yoneya/fastapi-mybest-template/blob/e1130d4f0437bbfe3bbd2211c832ac0f2107ff67/app/schemas/job.py#L8)
 ```python
@@ -73,7 +76,8 @@ class JobResponse(BaseSchema):
 
 ```
 
-alias_generator,allow_population_by_field_nameを以下のようにセットすることで、キャメルケース、スネークケースを自動的に変換できます。これにより、Python側ではスネークケースで管理し、フロントエンド側ではキャメルケースで管理することができます。
+BaseSchemaでは、alias_generator、allow_population_by_field_nameを以下のようにセットすることで、キャメルケース、スネークケースを自動的に変換しています。
+これにより、Python側ではスネークケースで管理しつつ、フロントエンド側ではキャメルケースで管理することができるようになります。
 
 [schemas/core.py](https://github.com/takashi-yoneya/fastapi-mybest-template/blob/e1130d4f0437bbfe3bbd2211c832ac0f2107ff67/app/schemas/core.py#L8)
 ```python
