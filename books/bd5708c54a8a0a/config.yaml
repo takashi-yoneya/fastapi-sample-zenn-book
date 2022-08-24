@@ -7,5 +7,6 @@ price: 0 # 有料の場合200〜5000
 chapters:
   - 00-introduction
   - 01-structure
+  - 01-endpoints
   # - 01-crud
 
