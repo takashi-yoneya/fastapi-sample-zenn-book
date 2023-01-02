@@ -1,5 +1,5 @@
 ---
-title: "OpenAPI Generatorを使い、バックエンド(FastAPI)の型情報をフロントエンド(React.js)と共通し、開発体験を最高に高める" # 記事のタイトル
+title: "OpenAPI Generatorを使い、バックエンド(FastAPI)の型情報をフロントエンドと共通し、開発体験を最高に高める" # 記事のタイトル
 emoji: "😸" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: [] # タグ。["markdown", "rust", "aws"]のように指定する
