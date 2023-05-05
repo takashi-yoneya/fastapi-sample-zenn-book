@@ -51,6 +51,38 @@ brew install pre-commit
 ```
 
 # 構成
+## ディレクトリ構成 
+
+ソースコードのディレクトリ構成は以下の通りです。
+
+```
+├── .env                    # 環境変数用ファイル（git管理外のため、.env.exampleからコピーする）
+├── .env.example            # 環境変数用ファイルのサンプル
+├── .env.prd                # 環境変数用ファイルの本番環境用
+├── .pre-commit-config.yaml # pre-commit設定ファイル
+├── LICENSE.md
+├── Makefile                # タスクランナーの定義に使用
+├── Readme.md
+├── mypy.ini                # mypyの設定ファイル
+├── poetry.lock             # poetyrのlockファイル
+├── pyproject.toml          # project全体の設定ファイル
+├── requirements-dev.txt    # poetryを使用しない場合のrequirements.txt(開発環境用)
+├── requirements.txt        # poetryを使用しない場合のrequirements.txt
+├── src                     # mainのソースコード
+│   ├── common              # 全体で使用する処理をまとめたディレクトリ
+│   │   ├── __init__.py
+│   │   ├── configs.py      # ソースコード全体で使用する設定の管理
+│   │   └── logger.py       # logger管理用
+│   ├── logger_config.yaml  # logging設定ファイル
+│   ├── main.py             # サンプルのmain
+│   └── sub.py              # サンプルのsub関数
+└── tests                   # テストコード格納用のディレクトリ
+    ├── conftest.py
+    └── sub
+        ├── __init__.py
+        ├── conftest.py
+        └── test_sub.py
+```
 
 ## 静的解析
 静的解析パッケージを整備することで、バグを事前に発見できたり、見た目が整えられたりと、簡単にコードの品質を向上させることができます。
