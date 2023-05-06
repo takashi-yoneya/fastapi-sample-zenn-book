@@ -84,6 +84,26 @@ brew install pre-commit
         └── test_sub.py
 ```
 
+## プロジェクト管理
+### pyenv,poetry
+pyenvを使用すると複数のPythonバージョンを簡単に切り替えることができます。
+複数のProjectを１つのPCで共存させたい場合に便利です。
+
+python3.10をインストールし、poetryでpython3.10の仮装環境を作成するコマンドは以下の通りです。
+
+```bash
+	pyenv install 3.10
+	poetry env use 3.10
+```
+
+既存のProjectからパッケージをインストールするコマンドは以下の通りです。
+poetry.lockがある場合はlockファイルから、ない場合はpyproject.tomlの定義に従いインストールされます。
+通常プロジェクトではpoetry.lockが共有される場合が殆どだと思います。
+
+```bash
+    poetry install
+```
+
 ## 静的解析
 静的解析パッケージを整備することで、バグを事前に発見できたり、見た目が整えられたりと、簡単にコードの品質を向上させることができます。
 
@@ -276,6 +296,19 @@ repos:
       - id: mypy
         exclude: ^tests/|^any-path/ # mypyの除外ディレクトリ。正規表現で記述できる
         additional_dependencies: [pydantic, types-PyYAML==6.0.7]
+```
+
+commit時にpre-commitを自動で実行するためには、以下のコマンドを１度実行してください。
+
+```bash
+pre-commit install
+```
+
+以降はcommit時にpre-commitが自動で実行されるようになり、失敗するとcommitできなくなります。
+検証中などでpre-commitを無視してcommmitしたい場合は以下のように-nオプションを付与すると、pre-commitが無視されます。
+
+```bash
+git commit -n -m "comment"
 ```
 
 ## Makefile
