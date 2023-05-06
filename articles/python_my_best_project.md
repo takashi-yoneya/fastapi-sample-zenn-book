@@ -92,8 +92,8 @@ pyenvを使用すると複数のPythonバージョンを簡単に切り替える
 python3.10をインストールし、poetryでpython3.10の仮装環境を作成するコマンドは以下の通りです。
 
 ```bash
-	pyenv install 3.10
-	poetry env use 3.10
+pyenv install 3.10
+poetry env use 3.10
 ```
 
 既存のProjectからパッケージをインストールするコマンドは以下の通りです。
@@ -101,7 +101,7 @@ poetry.lockがある場合はlockファイルから、ない場合はpyproject.t
 通常プロジェクトではpoetry.lockが共有される場合が殆どだと思います。
 
 ```bash
-    poetry install
+poetry install
 ```
 
 ## 静的解析
