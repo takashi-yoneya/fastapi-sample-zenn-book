@@ -1,5 +1,5 @@
 ---
-title: "[2023年最新版]Python案件で汎用的に使えるモダンなプロジェクトテンプレート" # 記事のタイトル
+title: "[2023年最新版:rye対応]Python案件で汎用的に使えるモダンなプロジェクトテンプレート" # 記事のタイトル
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["python"] # タグ。["markdown", "rust", "aws"]のように指定する
@@ -11,13 +11,19 @@ published: true # 公開設定（falseにすると下書き）
 パッケージ管理、lint, test, loggingなどの、汎用的にプロジェクトで活用可能な構成になっています。
 
 このテンプレートを導入することで、パッケージ管理やLint等の非機能系タスクから解放され、機能開発系のタスクに集中できるようになります。
+パッケージ管理ツールとして、最近リリースされて使用感が良いと話題のryeを採用したバージョンについても説明しています。
 
 今回説明する内容のリポジトリは以下の通りです。
 
+## rye使用バージョン
+新しいパッケージ管理ツールであるryeを使用したバージョンは以下の通りです。
+https://github.com/takashi-yoneya/python-template-rye
+
+
+## Poetry使用バージョン（従来版）
 https://github.com/takashi-yoneya/python-template
 
 # 想定読者
-
 PythonやGitの基本的な使い方を理解している方を想定しているため、基本的な用語説明は省略しています。
 
 # 環境
@@ -25,14 +31,34 @@ PythonやGitの基本的な使い方を理解している方を想定してい�
 開発環境はVSCODEの前提で説明しています。
 
 # 必須パッケージ
-## pyenv
+## rye(poetryを使用する場合はpyenv,poetryをインストールしてください)
+2023.5にリリースされた新しいパッケージ管理ツールで、Rustで実装されているため動作が早く、オールインワンを想定しているツールのため、pyenvとの併用が不要で、ryeさえあれば管理が完結するようになっています。
 
+インストールコマンドは以下の通りです。
+
+```bash
+curl -sSf https://rye-up.com/get | RYE_INSTALL_OPTION="--yes" bash
+echo 'source "$HOME/.rye/env"' >> ~/.bashrc
+source "$HOME/.rye/env"
+```
+
+zshを使用する場合は、以下のように.zshrcにsourceコマンドをセットします。
+```>> ~/.zshrc```以外の部分は全て同じです。
+
+```bash
+curl -sSf https://rye-up.com/get | RYE_INSTALL_OPTION="--yes" bash
+echo 'source "$HOME/.rye/env"' >> ~/.zshrc
+source "$HOME/.rye/env"
+```
+
+インストール後、```rye --version```を実行して、バージョンが表示されれば成功です。
+
+## pyenv(Ryeを使用する場合は不使用です)
 複数バージョンのPythonを管理することができる便利なツールです。
 インストール方法は、以下の記事がわかりやすいです。
 https://zenn.dev/kenghaya/articles/9f07914156fab5
 
-## poetry
-
+## poetry(Ryeを使用する場合は不使用です)
 プロジェクト管理ができる便利なツールです。
 node.jsでいうところのnpmのような位置づけです。
 
@@ -40,7 +66,6 @@ node.jsでいうところのnpmのような位置づけです。
 
 インストール方法は、以下の記事がわかりやすいです。
 https://qiita.com/nokonoko_1203/items/a694be4e76da0872f51a#poetry%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B
-
 
 ## pre-commit
 commit時に自動で所定のチェックを行うことができるツールです。
@@ -53,7 +78,7 @@ brew install pre-commit
 ```
 
 # 構成要素の説明
-## ディレクトリ構成 
+## ディレクトリ構成（Rye使用バージョン）
 
 ソースコードのディレクトリ構成は以下の通りです。
 
@@ -68,8 +93,8 @@ brew install pre-commit
 ├── mypy.ini                # mypyの設定ファイル
 ├── poetry.lock             # poetyrのlockファイル
 ├── pyproject.toml          # project全体の設定ファイル
-├── requirements-dev.txt    # poetryを使用しない場合のrequirements.txt(開発環境用)
-├── requirements.txt        # poetryを使用しない場合のrequirements.txt
+├── requirements-dev.lock   # ryeで使用するrequirements.txt(開発環境用)
+├── requirements.lock       # ryeで使用するrequirements.txt
 ├── src                     # mainのソースコード
 │   ├── common              # 全体で使用する処理をまとめたディレクトリ
 │   │   ├── __init__.py
@@ -87,7 +112,47 @@ brew install pre-commit
 ```
 
 ## プロジェクト管理
-### pyenv,poetry
+
+### ryeを使用する場合
+ryeを使用すると簡単にPythonバージョンを切り替えることができます。
+以下のコマンドを実行すると、プロジェクト内に.python-versionファイルが作成されるため、これを管理することでプロジェクトでPythonバージョンを固定できます。
+
+```bash
+rye pin 3.10
+```
+
+既にプロジェクトディレクトリが存在する環境でryeの初期設定を行う場合は以下のコマンドを実行します。
+
+```bash
+rye init 
+```
+
+新規にプロジェクトディレクトリから作成する場合は以下の通り、project_nameを引数として指定します。
+
+```bash
+rye init {{project_name}}
+```
+
+requirements.lockが存在する環境でパッケージをインストールする場合は、以下のコマンドを実行します。
+これにより、.venvディレクトリが自動的に作成されて、パッケージがインストールされます。
+
+```bash
+rey sync
+```
+
+パッケージを追加したい場合は以下のコマンドを実行します。
+
+```bash
+rye add {{ パッケージ名 }}
+```
+
+開発環境限定でパッケージを追加したい場合は以下のコマンドを実行します。
+
+```bash
+rye add --dev {{ パッケージ名 }}
+```
+
+### pyenv,poetry(ryeを使用する場合は不要)
 pyenvを使用すると複数のPythonバージョンを簡単に切り替えることができます。
 複数のProjectを１つのPCで共存させたい場合に便利です。
 
@@ -336,7 +401,7 @@ install:
 # 実行方法
 
 以下のリポジトリをクローン後、以下を実行して必要パッケージ等をインストールします。
-https://github.com/takashi-yoneya/python-template
+https://github.com/takashi-yoneya/python-template-rye
 
 ```bash
 make install
