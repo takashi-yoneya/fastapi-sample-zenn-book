@@ -44,7 +44,7 @@ Pythonは3.10を前提とした記述をしています。
 
 # 移行のポイント
 ## (必須)BaseSettingsが別パッケージのpydantic-settingsになった
-アプリ固有の設定を管理するBaseSettingsは元々Pydanticに含まれていましたが、今回からプラグイン扱いとなり、別のパッケージとなっていますのでinstallおよびimportの変更が必要です。
+アプリ固有の設定を管理するBaseSettingsはV1ではPydanticに含まれていましたが、V2からプラグイン扱いとなり、別のパッケージとなっていますのでinstallおよびimportの変更が必要です。
 仕様は殆ど変更がなさそうなので、私はimportの変更だけで対応できました。
 
 V1
@@ -124,7 +124,7 @@ class User(BaseModel):
 ```
 
 ## (追加機能)validatorとは別にserializerが追加されjson化される際の変換処理を定義できるようになった
-従来は、Pydanticのモデル作成時もシリアライズ時も同一のvalidatorで処理されていましtが、v2からは区別可能になりました。
+従来は、Pydanticのモデル作成時もシリアライズ時も同一のvalidatorで処理されていましたが、v2からは区別可能になりました。
 
 field_serializer
 model_serializer
@@ -132,10 +132,10 @@ model_serializer
 を使用でき、シリアライズ固有の変換処理などを実装できます。
 
 
-## (推奨)class Configではなくmodel_config = ConfigDi()ctを使用する
+## (推奨)class Configではなくmodel_config = ConfigDict()を使用する
 
 従来のConfigクラスでは、エディタでの補完やMypyチェックが効かずに、間違っていてもエラーにならない問題がありましたが
-v2ではConfigDictを使用することで、この問題が解消されました。
+v2ではConfigDict()を使用することで、この問題が解消されました。
 
 V1
 ```python
@@ -148,6 +148,8 @@ class TodoResponse(BaseModel):
 
 V2🆕
 ```python
+from pydantic import ConfigDict
+
 class TodoResponse(TodoBasBaseModele):
     id: str
     
@@ -155,7 +157,7 @@ class TodoResponse(TodoBasBaseModele):
 ```
 
 ## (推奨)to_camelの標準搭載およびallow_population_by_field_nameがpopulate_by_nameに変更になった
-JSONシリアライズ時のキャメルケース変換は、元々は外部ライブラリの追加が必要でしたが、v2ではPydanticに標準搭載されました。
+JSONシリアライズ時のキャメルケース変換は、V1では外部ライブラリの追加が必要でしたが、V2ではPydanticに標準搭載されました。
 また、configで指定する設定の名称が、allow_population_by_field_nameからpopulate_by_nameに変更になりました。
 以下では実用例として、alias_generatorとセットで使用することで、スネークケース、キャメルケースを自動的に相互変換しています。
 
@@ -197,6 +199,9 @@ TodoResponse.model_validate(orm_obj) # V1: TodoResponse.from_orm(orm_obj)
 ```
 ## (推奨)strict=Trueを指定すると、より厳格に型をチェックできるようになった
 strict=Trueを指定すると、str -> intの暗黙的な変換がエラーになるなど、厳密なチェックが実施できます。
+
+詳細は以下の公式サイトで確認できます。
+https://docs.pydantic.dev/latest/usage/strict_mode/
 
 V2🆕
 ```python
