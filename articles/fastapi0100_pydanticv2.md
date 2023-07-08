@@ -197,6 +197,52 @@ class TodoResponse(TodoBase):
 TodoResponse.model_validate(orm_obj) # V1: TodoResponse.from_orm(orm_obj)
 
 ```
+
+## (推奨)dict()が非推奨化して、model_dumpが新設された
+
+dict化する処理は、model_dump()が新設されています。
+
+V2🆕
+```python
+class TodoResponse(TodoBase):
+    id: str
+    tags: list[TagResponse] | None = []
+    created_at: datetime.datetime | None = None
+    updated_at: datetime.datetime | None = None
+
+    model_config = ConfigDict(from_attributes=True)　# V1: from_mode=True
+
+# ormインスタンスからpydanticインスタンスを生成
+data = TodoResponse.model_validate(orm_obj)
+data.model_dump() # dict化される
+```
+
+## (新機能)computed_field
+
+フィールド同士の計算によりセットされるフィールドはcomputed_fieldで定義できます。
+V1ではroot_validatorなどで実装する場合が多かったですが、よりわかりやすい機能として独立した形です。
+
+以下のコードは公式サイトからの引用です。
+
+V2🆕
+```python
+from pydantic import BaseModel, computed_field
+
+
+class Rectangle(BaseModel):
+    width: int
+    length: int
+
+    @computed_field
+    @property
+    def area(self) -> int:
+        return self.width * self.length
+
+
+print(Rectangle(width=3, length=2).model_dump())
+#> {'width': 3, 'length': 2, 'area': 6}
+```
+
 ## (推奨)strict=Trueを指定すると、より厳格に型をチェックできるようになった
 strict=Trueを指定すると、str -> intの暗黙的な変換がエラーになるなど、厳密なチェックが実施できます。
 
