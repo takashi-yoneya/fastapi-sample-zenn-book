@@ -96,11 +96,11 @@ from pydantic import BaseModel, validator, root_validator
 class User(BaseModel):
     name: str
 
-    @validator('name', pre=True)
+    @validator('name', pre=True) # <-
     def validate_name(cls, v):
         return v
 
-    @root_validator(pre=True)
+    @root_validator(pre=True) # <-
     def validate_root(cls, values):
         return values
 ```
@@ -113,11 +113,11 @@ from pydantic import BaseModel, field_validator, model_validator
 class User(BaseModel):
     name: str
 
-    @field_validator('name', mode='before')
+    @field_validator('name', mode='before') # <-
     def validate_name(cls, v):
         return v
 
-    @model_validator(mode='before')
+    @model_validator(mode='before') # <-
     def validate_root(cls, values):
         return values
 
