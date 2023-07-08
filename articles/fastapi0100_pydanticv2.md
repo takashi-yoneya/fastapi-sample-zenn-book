@@ -84,6 +84,8 @@ validator -> field_validator
 root_validator -> model_validator
 のように、より明確な印象になりました。
 
+また、V1のpre=Trueはmode='before'に変更になっています。modeは'before'以外に'after'も指定可能で、pydanticで型チェック前にvalidateした場合はbeforeを指定します。
+
 以下の例は[bump-pydantic](https://github.com/pydantic/bump-pydantic)より転記しています。
 
 V1
