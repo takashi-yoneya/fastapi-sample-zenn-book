@@ -1,5 +1,5 @@
 ---
-title: "FastAPIはPydantic v2対応でさらに爆速になった件(v1->v2移行のポイント)" # 記事のタイトル
+title: "FastAPIがPydantic v2対応したので、V2移行のポイントを紹介する(意外と簡単)" # 記事のタイトル
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["python", "FastAPI", "pydantic"] # タグ。["markdown", "rust", "aws"]のように指定する
