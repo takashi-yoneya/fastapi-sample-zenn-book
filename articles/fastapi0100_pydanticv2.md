@@ -25,7 +25,7 @@ https://engineers.safie.link/entry/2023/07/05/fastapi-pydantic-v2
 
 
 # 参考リポジトリ
-FastAPI 0.100.0に対応したリポジトリは以下を参照してください。
+FastAPI 0.100.0に対応したFastAPIのサンプルリポジトリを公開しています。
 他にもパッケージ管理のRyeやLinterのRuff、SQLAlchemy v2などの最新のライブラリを適用し、DBはAsync対応しています。
 
 https://github.com/takashi-yoneya/fastapi-mybest-template/tree/pydantic-v2-rye
