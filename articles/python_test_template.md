@@ -1,5 +1,5 @@
 ---
-title: "Python(pytest)でテスト書くならfixture,conftest,paramerarizeを理解すると世界が一気に変わる" # 記事のタイトル
+title: "Python(pytest)でテスト書くならfixture,conftest,parametrizeを理解すると世界が一気に変わる" # 記事のタイトル
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["python", "pytest"] # タグ。["markdown", "rust", "aws"]のように指定する
@@ -8,7 +8,7 @@ published: true # 公開設定（falseにすると下書き）
 
 # 概要
 Pythonのテストライブラリといえばpytestが一般的です。
-Python標準のuniitestとは異なり、クラスベースではなく関数ベースでテストコードを記述することが一般的ですが、fixture,conftest,paramerarizeを理解すると一気に世界が変わり、テスト体験が圧倒的に向上するため、これらの実装方法を紹介します。
+Python標準のuniitestとは異なり、クラスベースではなく関数ベースでテストコードを記述することが一般的ですが、fixture,conftest,parametrizeを理解すると一気に世界が変わり、テスト体験が圧倒的に向上するため、これらの実装方法を紹介します。
 
 
 # リポジトリ
@@ -109,8 +109,8 @@ test/di1/dir1-1/test_1-1.py のテストコードには、図内の(a),(b),(c)�
 上位階層のconftest.pyには、DBClientの定義が必須データの投入などのfixtureを記述しておき、各ディレクトリ直下のconftest.pyで必要なfixtureを定義していくと、fixtureの共通化と個別化が効果的に行えます。
 
 
-# parametrise
-1つのテスト関数で色々なパターンのデータでテストをしたい場合は多いですが、parametriseを使用すると、簡単に実装できます。
+# parametrize
+1つのテスト関数で色々なパターンのデータでテストをしたい場合は多いですが、parametrizeを使用すると、簡単に実装できます。
 
 ただし過度な共通化を行うと、わかりずらいテストになってしまう場合もあるので、注意が必要です。
 
