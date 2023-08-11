@@ -1,16 +1,14 @@
 ---
-title: "[2023年最新版]テストコードを制するものは、開発を制する(Python,Pytest)" # 記事のタイトル
+title: "Python(pytest)でテスト書くならfixture,conftest,paramerarizeを理解すると世界が一気に変わる" # 記事のタイトル
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
-topics: ["python"] # タグ。["markdown", "rust", "aws"]のように指定する
+topics: ["python", "pytest"] # タグ。["markdown", "rust", "aws"]のように指定する
 published: false # 公開設定（falseにすると下書き）
 ---
 
 # 概要
-開発品質の良し悪しは、テスト体験によって決まると言っても過言ではありません。
-テスト体験が良いと、積極的にテストコードが実装されますが、テスト体験が悪いと最低限のテストしか実装されなかったり、最悪はテスト自体実装されなくなってしまいます。
-
-この記事では、私がブラッシュアップを続けてきた、PythonのPytestを使用したテストの書き方について紹介します。
+Pythonのテストライブラリといえばpytestが一般的です。
+Python標準のuniitestとは異なり、クラスベースではなく関数ベースでテストコードを記述することが一般的ですが、fixture,conftest,paramerarizeを理解すると一気に世界が変わり、テスト体験が圧倒的に向上するため、これらの実装方法を紹介します。
 
 
 # リポジトリ
@@ -29,33 +27,32 @@ PythonやGitの基本的な使い方を理解している方を想定してい�
 - pytest
 - pytest_mock: mockを簡単に管理できるパッケージ
 
-# 基本
-## pytestを使ったテストの構成、基本
-pytestで良いテストを書けるかどうかは、fixtureとconftest.pyの理解度に左右されます。
-Python標準のunittestと比較すると、少し特殊な構造になっているので、最初は戸惑いがちですが、慣れると非常に簡潔にテストが書けるようになっています。
-
-## fixture
+# fixture
 テストを作る際に大きなウェイトを占めるのが、テストデータの準備等の事前作業です。
 これらをテスト関数内で毎回定義することもできますが、テストの焦点がぶれてしまうため得策ではありません。
-そこで、fixture(治具の意味)を使用することで、テスト関数に依存したテストデータやAPI連携用のテストClient,DBクライアントなどを簡単に定義することができます。
+そこで、fixture(治具の意味)を使用することで、テスト関数に依存したテストデータやAPI連携用のHTTPクライアント,DBクライアントなどを簡単に定義することができます。
 
-任意の関数にデコレーターとして以下のようにfixtureをセットすると、以下のように定義したfixtureはテストコードなどで引数に関数名を指定して呼び出すことができます。
+任意の関数にデコレーターとして以下のようにfixtureをセットすると、以下のように定義したfixtureをテストコードの関数名に指定することで、テストコードの前処理を定義することができます。
 
 引数にfixtureの関数名を指定するのが、Pytest以外で馴染みが薄くわかりずらい点ですが、fixtureは戻り値を取ることもできるので、引数に指定することで、戻り値もテスト関数内で使用することができます。
+
+以下の例では、test_func1を実行した場合に、any_func_name関数がまず実行された後に、test_func1の中身が実行されるようになります。
 
 ```python
 # any_func_nameというfixtureが定義されます
 @pytest.fixture
 def any_func_name():
   ...
+  return value
 
 
 # テスト関数の引数にfixtureを指定して使用できます
 def test_func1(any_func_name):
-  ...
+  value = any_func_value
 ```
 
 一般的によく使われるパターンはテスト用のDBクライアントを作成する処理をfixtureで定義して、必要なテスト関数で呼び出す方法です。
+以下の例では、test_func_with_db関数を実行すると、db関数(fixture)が前処理として呼び出されてテスト用のDBClientを定義できます。
 
 ```python
 @pytest.fixture
@@ -70,11 +67,11 @@ def test_func_with_db(db):
   assert len(res) == 5 
 ```
 
-以下のようにautouse=Trueを指定した場合は、テスト関数にfixtureを指定しなくとも、自動的に実行されます。
-常に実行したい初期処理などを定義する場合に使用します。
-便利ではあるが、どのfixtureが実行されているか、テスト関数から辿るのが難しくなるため、注意して使用する必要があります。
+以下のようにautouse=Trueを指定した場合は、テスト関数にfixtureを指定せずとも、全てのテスト関数で自動的に実行されるため、常に実行したい初期処理などを定義する場合に使用します。
+便利ではありますが、どのfixtureが実行されているか、テスト関数から辿るのが難しくなるため、注意して使用する必要があります。
 
 ```python
+# autouse=Trueを付与すると、全てのテスト関数の前処理として自動的に実行されます。
 @pytest.fixture(autouse=True)
 def setup():
   ...
@@ -85,38 +82,60 @@ def test_func():
 
 ```
 
+テストの後処理を行いたい場合は、以下のようにyieldを使用すると簡単です。
+yieldはreturnとは違い、呼び出し元の処理が終わった後にまたyieldの場所に戻ってくることが出来る制御です。
 
-### conftest.py
+```python
+@pytest.fixture
+def db():
+  # 使用するDBクライアントの定義を行う
+  db_client = ...
+  # 任意の後処理を定義したい場合は、yieldを使うことで、テスト関数実行後に、yieldより下の行の処理を実行できます。
+  yield db_client
+  db_clinet.close()
+
+```
+
+# conftest.py
 fixtureはテストモジュール内で定義しても良いですが、複数のモジュールを横断して使用したいような場合は、conftest.pyにfixtureを定義することで、複数のモジュールを横断してfixtureを使用することができます。
 
-conftest.pyは階層構造で処理されるので、conftest.pyが存在する階層以下にしか適用されない、という特性があります。
-具体的には、fixtureの定義に使用することが多いです
+conftest.pyはimportでの読み込みは不要で、自動的に読み込まれます。
+conftest.pyは階層構造で処理され「conftest.pyが存在する階層を含むそれ以下の階層にしか適用されない」という特性があります。
 
-test root -> 全体で使用するfixtureを定義
-app1 -> app1のみで使用するfixtureを定義
-DB連携を行う場合は、DBへのレコード投入を行うことが多いです。
-これにより、テストするモジュール単位でDBレコードを使い分けることができます。
+以下図のような構成を例とすると、test/(テストルート)直下に配置したconftest.py(a)はテスト全体に適用され、dir/直下に配置したconftest.py(b)はdir1/配下のみに適用されます。
+test/di1/dir1-1/test_1-1.py のテストコードには、図内の(a),(b),(c)のconftest.pyが適用されます。
+![conftest_tree](/images/conftest_tree.png)
+
+上位階層のconftest.pyには、DBClientの定義が必須データの投入などのfixtureを記述しておき、各ディレクトリ直下のconftest.pyで必要なfixtureを定義していくと、fixtureの共通化と個別化が効果的に行えます。
 
 
-### parameterise
-1つのロジックで色々なパターンのテストをしたい場合は多いですが、parameteriseを使用すると、簡単に実装できます。
+# parameterise
+1つのテスト関数で色々なパターンのデータでテストをしたい場合は多いですが、parameteriseを使用すると、簡単に実装できます。
 
-ただし、共通化しすぎると、わかりずらいテストになってしまう場合もあるので、正常系と異常系を分けるなどの工夫は必要になると思います。
+ただし過度な共通化を行うと、わかりずらいテストになってしまう場合もあるので、注意が必要です。
+
+以下の例では、１つのテスト関数で２種類のパタメータでテストを定義しています。
+テスト関数に```pytest.mark.parametrize```デコーレータを記述し、第一引数に変数名、第二引数にパラメータを複数指定できます。
+パラメータの指定は```pytest.param```を使用すると可読性があがります。```pytest.param```には```pytest.mark.parametrize```の第一引数で指定した変数名の順番で、テストで使用したいパラメータを指定できます。idを明示的に指定した場合は、```テストファイル名::テスト関数[id名]```のように実行できます。
 
 ```python
 import pytest
 
 @pytest.mark.parametrize(
+    # ここで指定した変数名が、テスト関数内で使用可能
     [
         "data_in",
         "expected_status",
         "expected_data"
     ],
+    # 複数のパラメーターを定義できる
     [
+      # 上記の順番(data_in, expected_status, expected_data)で変数を記述する
       pytest.param(
         {"name": "test"},
         200,
         {"name": "test"},
+        # idを明示的に指定した場合は、テストファイル名::テスト関数[id名]のように実行できる
         id="success"
       ),
       pytest.param(
@@ -127,6 +146,7 @@ import pytest
       )
     ],
 )
+# pytest.mark.parametrizeの第一引数で指定した変数名は、かならずテストコードの引数に指定する必要がある。
 def test_func1(data_in, expected_status, expected_data, authed_client):
     # action
     res = authed_client.post("/users/register", json=data_in)
@@ -136,67 +156,42 @@ def test_func1(data_in, expected_status, expected_data, authed_client):
     assert res.json() == expected_data
 ```
 
-### mocker
+<!-- # mocker
 私は基本的にはMockは使いたくない派ですが、外部連携やテスト対応するのが非常に工数がかかる部分については
 mockerを使ってMock化します。
 
-Mockを不要に多用してしまうと、実際の動作に関わらずMockが決まった値を返してしまい意味のないテストになってしまう場合があるので、Mockするかの判断は慎重に行う必要があります。
+pytestではpytest_mockをinstallすると簡単です。
 
-mocker.patchに指定するPathが少し特殊ですが、Mockしたい関数がimportされているファイルからの想定Pathのような形で記述します。
+Mockを多用してしまうと、実際の動作に関わらずMockが決まった値を返してしまい意味のないテストになってしまう場合があるので(偽陽性)、Mockするかの判断は慎重に行う必要があります。
+
+Mock化には、patchを使用します。
+mocker.patchに指定するPathが少し特殊ですが、テスト対象の関数のPath+Mockしたい関数をドットで繋ぐ形式で記述します。
+patchの第一引数で指定した関数やメソッドを任意のMockに置き換えることができます。
+また、patchしたObjectを保持しておくと、p.assert_once()のように、対象の処理が何度実行されたかなどについてもチェックすることができます。
 
 ```python
+from pytest_mock import MockerFixture
+
 def test_func1(mocker: MockerFixture):
-  p = mocker.patch("app.module.external_func", return_value=[])
+  # patchを適用すると、指定した関数はreturn_valueに指定した値を返すようになる
+  p = mocker.patch("app.module.external_api.get_wather", return_value=[{"hoge": "piyo"}])
+
+  # mockした関数を実行する
+  res = get_wather("test")
+
+  # patchした関数が一度だけ実行されたことを確認する
   p.assert_once()
+
+  # Mock化したので、patchのreturn_valueと値と一致する
+  assert res == {"hoge": "piyo"}
 ```
 
-### ディレクトリ構成
+```python
+# app.module.external_api.py
 
-# テストを作る流れ
-## テストデータの準備(arrange)
-テストデータの準備はconftest.pyで行います。Web開発においてはテストデータとはほぼ全てDBに投入されたデータを意味します。
-そこで、conftest.pyでDBにデータを登録します。
-
-```
-```
-
-## テストロジックの作成(action, assert)
+def get_wather(code) -> dict[str, str]:
+  ...
+  return result
 
 
-## 1ロジックで複数パターンのテストを用意
-parameterize
-
-
-# testはarrangeが一番面倒
-テストのAAAの原則でいうと
-arange
-action
-assetion
-のうち、arrangeが非常に面倒な場合が多いです
-テストをするために必要なデータを準備して、テスト可能な状態にすることが必要ですが
-これを失敗すると、テストでのみエラーが発生するといった本末転倒な自体に遭遇します。
-
-そのため、前提の準備であるarrageを簡単に整備できるように方式を検討する必要があります。
-
-共通化すべきは共通化するが過度な共通化は禁物
-意図がテストコードがから明確に理解できるようにする
-
-
-# 不用意にテストが壊れないこと
-テストコードを書く開発を行なったことがあれば経験があると思いますが、実装と無関係なように見えるテストがなぜか落ちて
-その対応に無意な時間を消費する、ということが多々発生します。
-
-これは最悪にテスト体験を低下させるので、極力これが起きないような構成にする必要があります。
-
-これの原因の多くはテストデータを過度に共有化していることに起因する場合が多いです。
-今回のテスト用にテストデータを修正した際に、それを別のテストからも参照してたためにテストが落ちるというものです。
-
-テストデータの共通化は最低限として、各テストコードのconftest.pyで個別のテストデータを定義するようにした方が、影響範囲を最小化できるのでオススメです。
-
-修正しやすいこと
-
-# WebAPIのテストの例
-DBをMockしない方がテストは通るが実際には動かない問題を防止できる
-最低限APIのアクセスを受け付けるHandlerの結合テストは行う方が良い
-Usecase等のテストは薄い層の場合も多いので、テストしても効果が薄い。
-あくまで仕様が複雑であったり、バグ時の影響が大きい場合に行うようにした方が良い。
+``` -->
