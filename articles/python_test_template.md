@@ -3,7 +3,7 @@ title: "Python(pytest)でテスト書くならfixture,conftest,paramerarizeを�
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["python", "pytest"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 # 概要
@@ -109,8 +109,8 @@ test/di1/dir1-1/test_1-1.py のテストコードには、図内の(a),(b),(c)�
 上位階層のconftest.pyには、DBClientの定義が必須データの投入などのfixtureを記述しておき、各ディレクトリ直下のconftest.pyで必要なfixtureを定義していくと、fixtureの共通化と個別化が効果的に行えます。
 
 
-# parameterise
-1つのテスト関数で色々なパターンのデータでテストをしたい場合は多いですが、parameteriseを使用すると、簡単に実装できます。
+# parametrise
+1つのテスト関数で色々なパターンのデータでテストをしたい場合は多いですが、parametriseを使用すると、簡単に実装できます。
 
 ただし過度な共通化を行うと、わかりずらいテストになってしまう場合もあるので、注意が必要です。
 
