@@ -11,7 +11,7 @@ FastAPIのrouter定義(path関数)では、def/async def のいずれも使用�
 
 以下にasyncとsyncの実装例を記述します。
 
-```
+```python
 # sync
 @router.get("/sync")
 def get_develop_sync(i: int) -> None:
