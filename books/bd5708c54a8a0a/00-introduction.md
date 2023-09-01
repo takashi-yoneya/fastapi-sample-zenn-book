@@ -56,3 +56,4 @@ FastAPIは、私の知る限り最高のバックエンドフレームワーク�
 - CORS-ORIGINの柔軟な設定方法
 - Sentryを使用したログの集中管理(Sentry log management)
 - 自然言語解析(sudachi language analyze)
+- Debugを効率化するDebugToolbar

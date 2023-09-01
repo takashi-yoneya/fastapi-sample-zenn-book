@@ -10,5 +10,6 @@ chapters:
   - 01-endpoints
   - 02-openapi-generator
   - 10-soft_delete
+  - 20-debug-toolbar
   # - 01-crud
 
