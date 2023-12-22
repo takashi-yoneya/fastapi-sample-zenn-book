@@ -1,5 +1,5 @@
 ---
-title: "FastAPIで１つのSwagger UIに全てのAPIを表示させているなら、分割した方が管理が楽になる" # 記事のタイトル
+title: "FastAPIでAPIが多くなってくるとSwagger UIがゴチャつくので、機能、ドメイン毎に別々のSwagger UIに分割する方法" # 記事のタイトル
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["python", "fastapi", "swagger"] # タグ。["markdown", "rust", "aws"]のように指定する
