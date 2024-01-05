@@ -10,7 +10,7 @@ published: true # 公開設定（falseにすると下書き）
 
 今回説明する内容を含んだ実用的な FastAPI テンプレートは以下のリポジトリに Push しています。
 
-https://github.com/takashi-yoneya/fastapi-mybest-template
+https://github.com/takashi-yoneya/fastapi-template
 
 # OpenAPI Generator を使うと何が嬉しいか？
 
@@ -252,6 +252,6 @@ useEffect(() => {
 
 細かな実装は、説明すると長くなってしまうので、以下の当方のリポジトリを参考にしていただければと思います。
 
-https://github.com/takashi-yoneya/fastapi-mybest-template
+https://github.com/takashi-yoneya/fastapi-template
 
 ※FastAPI,React を使った実用的な実装テンプレートです。

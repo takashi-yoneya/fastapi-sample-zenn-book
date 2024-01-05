@@ -27,7 +27,7 @@ FastAPIは、私の知る限り最高のバックエンドフレームワーク�
 本書で紹介するソースコードは以下で公開しております。
 なお、ソースコードは日々Updateしているため、本書の記述内容と差異がある可能性があります。
 
-[https://github.com/takashi-yoneya/fastapi-mybest-template](https://github.com/takashi-yoneya/fastapi-mybest-template)
+[https://github.com/takashi-yoneya/fastapi-template](https://github.com/takashi-yoneya/fastapi-template)
 
 # 前提とするバージョン
 - Python 3.9+
