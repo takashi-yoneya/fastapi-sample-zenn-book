@@ -35,7 +35,7 @@ Python や Git の基本的な使い方を理解している方を想定して�
 
 # Ruff をプロジェクトに導入する
 
-pre-commit は commit 前にコード全体をチェックすることができるライブラリです。
+pre-commit は commit 前にコード全体をチェックすることができるライブラリです。pre-commit で使用するライブラリは、pre-commit 固有の環境に install されるため、プロジェクトのライブラリ依存関係に影響を与えません。
 Ruff のような Linter ツールは pre-commit を使用して pre-commit 内で完結してしまった方が、環境に ruff をインストールする必要もなく簡単です。
 
 pre-commit がインストールされていない場合は、以下のコマンドでインストールします。
