@@ -1,9 +1,9 @@
 ---
-title: "PythonのLinter、Formatterは、もうRuff一択" # 記事のタイトル
+title: "Pythonの Linter Formatter は、もうRuff一択。最短5分でプロジェクトに導入" # 記事のタイトル
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["python", "ruff", "linter"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 ---
 
 # 概要
@@ -17,8 +17,7 @@ Ruff は Rust 製の高速な Linter、Formatter で、Python のコードをチ
 
 本記事の説明に使用しているサンプルの実装は、以下のリポジトリです。
 
-TODO: FIX
-https://github.com/takashi-yoneya/python-test-template
+https://github.com/takashi-yoneya/ruff-example
 
 # 想定読者
 
@@ -36,7 +35,7 @@ Python や Git の基本的な使い方を理解している方を想定して�
 
 # Ruff をプロジェクトに導入する
 
-pre-commitはcommit前にコード全体をチェックすることができるライブラリです。
+pre-commit は commit 前にコード全体をチェックすることができるライブラリです。
 Ruff のような Linter ツールは pre-commit を使用して pre-commit 内で完結してしまった方が、環境に ruff をインストールする必要もなく簡単です。pre-commit がインストールされていない場合は、以下のコマンドでインストールします。
 
 ```bash
@@ -44,7 +43,7 @@ brew install pre-commit
 pre-commit install
 ```
 
-pre-commit は.pre-commit-config.ymlで設定を管理しています。ruff を追加するには、以下のように設定ファイルを作成もしくは追記します。
+pre-commit は.pre-commit-config.yml で設定を管理しています。ruff を追加するには、以下のように設定ファイルを作成もしくは追記します。
 
 .pre-commit-config.yml
 
@@ -67,11 +66,11 @@ pre-commit run
 
 # Ruff の設定ファイル
 
-Python では pyproject.toml を使用してプロジェクト全体の設定を管理します。Ruff の設定例を以下に示します。
+Python では pyproject.toml を使用してプロジェクト全体の設定を管理します。Ruff の設定例を以下に示します。こちらの設定は FastAPI に設定されている ruff の設定を参考にしています。
 
 select にはチェックするエラーの種類を指定します。"ALL"を指定するとすべてのエラーをチェックします。
 
-実行して対処不要なエラーはignoreに追記していくなどして、プロジェクトに合わせて設定を調整していきます。
+実行して対処不要なエラーは ignore に追記していくなどして、プロジェクトに合わせて設定を調整していきます。
 
 pyporject.toml
 
