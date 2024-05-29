@@ -43,9 +43,9 @@ brew install pre-commit
 pre-commit install
 ```
 
-pre-commit は.pre-commit-config.yml で設定を管理しています。ruff を追加するには、以下のように設定ファイルを作成もしくは追記します。
+pre-commit は.pre-commit-config.yaml(拡張子は必ず yaml。yml では NG) で設定を管理しています。ruff を追加するには、以下のように設定ファイルを作成もしくは追記します。
 
-.pre-commit-config.yml
+.pre-commit-config.yaml
 
 ```yml
 repos:
