@@ -136,10 +136,10 @@ class User(BaseModel):
 
 ```
 
-model_validator で mode=after と before の違い
+### model_validator で mode を after に指定した場合と before に指定した場合の違い
 
-before を指定した場合は Pydantic インスタンス作成前時点で受け取った dict 形式のデータに対して任意のバリデーションを行い、dict 形式で返す必要があるのに対して、
-after を指定した場合は Pydantic インスタンス作成後に作成したインスタンスに対してバリデーションを行い、インスタンスを返す必要があります。
+before を指定した場合は Pydantic インスタンス作成前時点で動作するため、入力値は dict 形式のデータになります。この dict 形式のデータに任意のバリデーションを行います。レスポンスは dict 形式で返す必要があります。
+after を指定した場合は Pydantic インスタンス作成後に動作するため、作成したインスタンスに対してバリデーションを行います。レスポンスはインスタンス自身(self)を返す必要があります。
 
 ```python
 
@@ -149,13 +149,13 @@ class User(BaseModel):
     name: str
 
     # インスタンス作成前に動作するためクラスメソッドになる
-    @model_validator(mode='before') 
+    @model_validator(mode='before')
     @classmethod
     def validate_root_before(cls, values: dict[str, Any]) -> dict[str, Any]:
         return values
 
     # 作成されたインスタンスに対する操作のためインスタンスメソッドになる
-    @model_validator_after(mode='after') 
+    @model_validator_after(mode='after')
     def validate_root(self) -> Self:
         return self
 
