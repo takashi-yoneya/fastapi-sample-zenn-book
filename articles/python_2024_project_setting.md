@@ -1,5 +1,5 @@
 ---
-title: "[2024年版]Pythonプロジェクト管理・linterをuvとRuffで超高速化" # 記事のタイトル
+title: "[2024年版]Pythonプロジェクト管理はuv、LinterはRuffを導入して開発体験を高める" # 記事のタイトル
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["python", "uv", "ruff", "linter"] # タグ。["markdown", "rust", "aws"]のように指定する
