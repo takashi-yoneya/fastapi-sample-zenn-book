@@ -95,7 +95,7 @@ admin_main.py を起動ファイルとし、admin ディレクトリに template
 admin_main.py(名称は何でも良い)は管理画面のメイン処理を記述するファイルです。以下のように記述します。
 SQLAdmin 自体は Web サーバーの機能を持たないため、FastAPI を使用して Web サーバーを起動し、SQLAdmin 用のエンドポイントを追加する方式になります。
 
-以下ソースコードでは、aの箇所 で FastAPI アプリケーションを作成し、bの箇所 で SQLAdmin のインスタンスを作成します。cの箇所 で管理画面の view を追加しています。
+以下ソースコードでは、a の箇所 で FastAPI アプリケーションを作成し、b の箇所 で SQLAdmin のインスタンスを作成します。c の箇所 で管理画面の view を追加しています。
 
 admin_main.py
 
@@ -356,6 +356,16 @@ templates/user_csv_import.html
 </div>
 {% endblock %}
 ```
+
+## 【重要】バックエンド API と管理画面を１つの FastAPI アプリケーションで管理する場合の注意事項
+
+今回は main.py と admin_main.py の２つのファイルで管理画面とバックエンド API のプロセスを分離していますが、１つの FastAPI アプリケーション(main.py)で管理画面とバックエンド API を管理することも可能です。
+ただし、管理画面側のライブラリの仕様上、エンドポイントは async def(非同期) で作成されるため、バックエンド API 側の Path 関数(エンドポイント)を def(同期処理)で作成している場合に、適切に並列実行されない問題が発生します。
+そのため、バックエンド API 側が async def(非同期)で作成されていない場合は、管理画面とバックエンド API は分離して、別々のプロセスとして起動することが望ましいです。
+
+async def(非同期)と def(同期)が混在した場合に適切に並列実行されない問題の解説は以下の記事を参照してください。
+
+https://zenn.dev/tk_resilie/articles/fastapi_async_sync
 
 ## 起動方法
 
