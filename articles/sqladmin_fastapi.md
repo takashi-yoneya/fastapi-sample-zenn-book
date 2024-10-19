@@ -355,7 +355,7 @@ templates/user_csv_import.html
 {% endblock %}
 ```
 
-# 起動方法
+## 起動方法
 
 FastAPI 上で管理画面を Mount しているため、FastAPI を起動することで管理画面が表示できるようになります。
 app/admin_main.py に記述している場合は以下のコマンドで起動し、http://localhost:8000/admin にアクセスすることで管理画面にアクセスできます。
