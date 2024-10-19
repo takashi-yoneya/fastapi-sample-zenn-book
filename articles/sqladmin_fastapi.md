@@ -3,7 +3,7 @@ title: "FastAPIに簡単に管理画面を追加できるSQlAdminが凄い" # �
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["python", "admin", "sqladmin", "fastapi"] # タグ。["markdown", "rust", "aws"]のように指定する
-published: false # 公開設定（falseにすると下書き）
+published: true # 公開設定（falseにすると下書き）
 publication_name: where
 ---
 
