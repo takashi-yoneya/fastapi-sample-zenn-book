@@ -1,5 +1,5 @@
 ---
-title: "FastAPIに簡単に管理画面を追加できるSQlAdminが凄い" # 記事のタイトル
+title: "FastAPIに簡単に管理画面を追加できるSQLAdminが凄い" # 記事のタイトル
 emoji: "🐍" # アイキャッチとして使われる絵文字（1文字だけ）
 type: "tech" # tech: 技術記事 / idea: アイデア記事
 topics: ["python", "admin", "sqladmin", "fastapi"] # タグ。["markdown", "rust", "aws"]のように指定する
