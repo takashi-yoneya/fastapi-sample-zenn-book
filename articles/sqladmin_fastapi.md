@@ -93,7 +93,7 @@ admin_main.py を起動ファイルとし、admin ディレクトリに template
 admin_main.py(名称は何でも良い)は管理画面のメイン処理を記述するファイルです。以下のように記述します。
 SQLAdmin 自体は Web サーバーの機能を持たないため、FastAPI を使用して Web サーバーを起動し、SQLAdmin 用のエンドポイントを追加する方式になります。
 
-以下ソースコードでは、a で FastAPI アプリケーションを作成し、b で SQLAdmin のインスタンスを作成します。c で管理画面の view を追加しています。
+以下ソースコードでは、aの箇所 で FastAPI アプリケーションを作成し、bの箇所 で SQLAdmin のインスタンスを作成します。cの箇所 で管理画面の view を追加しています。
 
 admin_main.py
 
