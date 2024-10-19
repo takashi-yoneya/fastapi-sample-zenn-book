@@ -17,7 +17,9 @@ FastAPI は簡単にバックエンド API が作成できますが、Django の
 DB テーブル毎に CRUD 画面を作成するのは手間がかかるため、SQLAdmin というライブラリを使用することで簡単に管理画面を追加することができます。
 Python の有名な ORM である SQLAlchemy に対応しており、最小限のコード追加で管理画面を追加することができます。
 
-本記事では、FastAPI に SQLAdmin を導入する方法と、簡単な CRUD 画面の作成方法を紹介します。
+本記事では、FastAPI に SQLAdmin を導入する方法と、以下のような簡単な CRUD 画面の作成方法を紹介します。
+
+![tags list](/images/sqladmin_tags_list.png)
 
 # リポジトリ
 
